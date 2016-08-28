@@ -1,10 +1,25 @@
 $(document).ready(function(){
 
   //Get all posts
+
+  $('button#allPosts').on('click', function(event){
+    idValue = 'ul#' + $(this).attr('id');
+    $(idValue).toggle();
+  })
+
   var allPosts = $.get('https://jsonplaceholder.typicode.com/posts',
   function(data){
-    console.log(data);
-
+    button = $('button#allPosts');
+    var newUl = $('<ul></ul>').attr('id', button.attr('id'));
+    // newUl.html('This is Working');
+    button.before(newUl);
+    data.forEach(function(post){
+      // console.log(post)
+      liHtml = post.id + ' : ' + post.title;
+      var newLi = $('<li id="item"></li>').html(liHtml);
+      newUl.append(newLi)
+    })
+    newUl.hide();
   })
 
   //Get post with id of 10
@@ -63,9 +78,10 @@ $(document).ready(function(){
   })
 
   //Display a list of posts, and do fancy things
-  var listOfPosts = $.get('https://jsonplaceholder.typicode.com/posts',
-  function(data){
-    console.log("id: ", data.id, " title: ", data.title);
-
+  var listOfPosts = $.each(allPosts.response,
+  function(key, value){
+    console.log(allPosts.responseJSON);
+    console.log(key, value);
+    console.log("id: ", value["id"], " title: ", value["title"]);
   })
 })
