@@ -1,12 +1,12 @@
 $(document).ready(function(){
 
-  //Get all posts
-
-  $('button#allPosts').on('click', function(event){
-    idValue = 'ul#' + $(this).attr('id');
+  $('button').on('click', function(event){
+    idValue = 'ul#' + $(event.target).attr('id');
+    $('ul').not(idValue).not('ul#noHide').hide();
     $(idValue).toggle();
   })
 
+  //Get all posts
   var allPosts = $.get('https://jsonplaceholder.typicode.com/posts',
   function(data){
     button = $('button#allPosts');
@@ -26,11 +26,6 @@ $(document).ready(function(){
   })
 
   //Get post with id of 10
-  $('button#postId10').on('click', function(event){
-    idValue = 'ul#' + $(this).attr('id');
-    $(idValue).toggle();
-  })
-
   var postId10 = $.get('https://jsonplaceholder.typicode.com/posts',{"id": 10},
   function(data){
     button = $('button#postId10');
@@ -50,11 +45,6 @@ $(document).ready(function(){
   })
 
   //Get the comments from post with id of 12
-  $('button#postCommentsId12').on('click', function(event){
-    idValue = 'ul#' + $(this).attr('id');
-    $(idValue).toggle();
-  })
-
   var postCommentsId12 = $.get('https://jsonplaceholder.typicode.com/comments',{"postId": 12},
   function(data){
     button = $('button#postCommentsId12');
@@ -73,11 +63,6 @@ $(document).ready(function(){
   })
 
   //Get all the posts from user with id of 2
-  $('button#userId2Posts').on('click', function(event){
-    idValue = 'ul#' + $(this).attr('id');
-    $(idValue).toggle();
-  })
-
   var userId2Posts = $.get('https://jsonplaceholder.typicode.com/posts',{"userId": 2},
   function(data){
     button = $('button#userId2Posts');
@@ -96,11 +81,6 @@ $(document).ready(function(){
   })
 
   //Create a new post and log the id generated for it by the server
-  $('button#newPost').on('click', function(event){
-    idValue = 'ul#' + $(this).attr('id');
-    $(idValue).toggle();
-  })
-
   var newPost = $.post('https://jsonplaceholder.typicode.com/posts', {
     "userId": 10,
     "title": "Priyam wrote this",
@@ -118,11 +98,6 @@ $(document).ready(function(){
   })
 
   //Replace the post with id of 12 and render the responseJSON
-  $('button#replacePostId12').on('click', function(event){
-    idValue = 'ul#' + $(this).attr('id');
-    $(idValue).toggle();
-  })
-
   var replacePostId12 = $.ajax({
     method: 'PUT',
     url: 'http://jsonplaceholder.typicode.com/posts/12',
@@ -141,11 +116,6 @@ $(document).ready(function(){
   })
 
   //Update the title of post with id of 12 and render responseJSON
-  $('button#updatePostId12').on('click', function(event){
-    idValue = 'ul#' + $(this).attr('id');
-    $(idValue).toggle();
-  })
-
   var updatePostId12 = $.ajax({
     method: 'PUT',
     url: 'http://jsonplaceholder.typicode.com/posts/12',
@@ -164,11 +134,6 @@ $(document).ready(function(){
   })
 
   //Delete the post with id of 12 and render a success message
-  $('button#deletePostId12').on('click', function(event){
-    idValue = 'ul#' + $(this).attr('id');
-    $(idValue).toggle();
-  })
-
   var deletePostId12 = $.ajax({
     method: 'DELETE',
     url: 'http://jsonplaceholder.typicode.com/posts/12',
@@ -183,10 +148,25 @@ $(document).ready(function(){
   })
 
   //Display a list of posts, and do fancy things
-  var listOfPosts = $.each(allPosts.response,
-  function(key, value){
-    console.log(allPosts.responseJSON);
-    console.log(key, value);
-    console.log("id: ", value["id"], " title: ", value["title"]);
+  var listOfPosts = $.get('https://jsonplaceholder.typicode.com/posts',
+  function(data){
+    button = $('button#listOfPosts');
+    // newUl.html('This is Working');
+    var newUl = $('<ul></ul>').attr('id', button.attr('id'));
+    button.before(newUl);
+
+    data.forEach(function(post){
+      // console.log(post)
+      liHtml = post.id + ': ' + post.title;
+      var newLi = $('<li id="item"></li>').html(liHtml).attr('id', post.id);;
+      newUl.append(newLi)
+    })
+    newUl.hide();
+  })
+
+  $('ul#listOfPosts li').click(function(){
+    commentPostId = $(this).attr('id');
+    console.log('something');
+    alert(commentPostId);
   })
 })
