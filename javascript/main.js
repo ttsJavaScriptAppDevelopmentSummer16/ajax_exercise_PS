@@ -2,8 +2,8 @@ $(document).ready(function(){
 
   $('button').on('click', function(event){
     idValue = 'ul#' + $(event.target).attr('id');
-    $('ul').not(idValue).not('ul#noHide').hide();
     $(idValue).toggle();
+    $('ul').not(idValue).not('ul#noHide').hide();
   })
 
   //Get all posts
@@ -164,9 +164,12 @@ $(document).ready(function(){
     newUl.hide();
   })
 
-  $('ul#listOfPosts li').click(function(){
-    commentPostId = $(this).attr('id');
-    console.log('something');
-    alert(commentPostId);
-  })
+  var newNavigate = function(){
+    $('ul#listOfPosts li').click(function(event){
+      event.stopPropagation();
+      commentPostId = $(event.target).attr('id');
+      console.log('something');
+      alert(commentPostId);
+    })
+  }
 })
