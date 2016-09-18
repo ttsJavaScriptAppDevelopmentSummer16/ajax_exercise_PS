@@ -1,11 +1,5 @@
 $(document).ready(function(){
 
-  $('button').on('click', function(event){
-    idValue = 'ul#' + $(event.target).attr('id');
-    $(idValue).toggle();
-    $('ul').not(idValue).not('ul#noHide').hide();
-  })
-
   //Get all posts
   var allPosts = $.get('https://jsonplaceholder.typicode.com/posts',
   function(data){
@@ -157,19 +151,25 @@ $(document).ready(function(){
 
     data.forEach(function(post){
       // console.log(post)
-      liHtml = post.id + ': ' + post.title;
+      liHtml = '<a href=' + "'./detail.html'" + '>' + post.id + ': ' + post.title + '</a>'
+      // liHtml = '<a>' + post.id + ': ' + post.title + '</a>'
       var newLi = $('<li id="item"></li>').html(liHtml).attr('id', post.id);;
       newUl.append(newLi)
     })
     newUl.hide();
   })
 
-  var newNavigate = function(){
-    $('ul#listOfPosts li').click(function(event){
-      event.stopPropagation();
-      commentPostId = $(event.target).attr('id');
-      console.log('something');
-      alert(commentPostId);
-    })
-  }
+  $('button').on('click', function(event){
+    idValue = 'ul#' + $(event.target).attr('id');
+    $(idValue).toggle();
+    $('ul').not(idValue).not('ul#noHide').hide();
+  })
+
+  $('ul#listOfPosts li').on('click', 'a', function(event){
+    event.preventDefault();
+    event.stopPropogation();
+    commentPostId = $(event.target).attr('id');
+    console.log(commentPostId);
+    alert('something');
+  })
 })
